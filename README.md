@@ -13,7 +13,7 @@ We wanted to make the distinction between the two:
 2. Setting is disabled for the entire device.
 
 This way we can prompt the user to go to the correct place in the settings
-application and make sure our application is aware if the user disables/enables
+application and make sure our application is aware that the user disables/enables
 a setting or denies/grants a permission.
 
 Currently we've only added a way to extract the 'location' setting.
