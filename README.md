@@ -49,9 +49,43 @@ and under `<application>` add:
   	```
 
 ## Usage
-```javascript
-import RNSettings from 'react-native-settings';
+#### Android and iOS
 
-// TODO: What to do with the module?
-RNSettings;
+##### Getting a setting:
+```javascript
+import RNSettings from 'react-native-settings'
+
+RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+  if (result == RNSettings.ENABLED) {
+    console.log('location is enabled')
+  } else {
+    console.log('location is disabled')
+  }
+})
+```
+
+#### Android only:
+##### Open settings application in a specific setting
+```javascript
+import RNSettings from 'react-native-settings'
+
+RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).
+then((result) => {
+if (result === RNSettings.ENABLED) {
+  console.log('location is enabled')
+}
+```
+
+##### Listen to setting change event (when applicable)
+```javascript
+import RNSettings from 'react-native-settings'
+import { DeviceEventEmitter } from 'react-native'
+
+_handleGPSProviderEvent = (e) => {
+  if (e[RNSettings.LOCATION_SETTING] === RNSettings.DISABLED) {
+    console.log('Location was disabled')
+  }
+}
+
+DeviceEventEmitter.addListener(RNSettings.GPS_PROVIDER_EVENT, this._handleGPSProviderEvent)
 ```
