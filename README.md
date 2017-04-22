@@ -1,6 +1,24 @@
 
 # react-native-settings
 
+## Still very much in Alpha!
+
+We created this module to allow us to query for specific device settings.
+For example we wanted to know if the GPS is on/off without using 'react-native'
+'geolocation' since using it will trigger a permission pop up.
+
+We wanted to make the distinction between the two:
+
+1. Permission is not allowed for our application.
+2. Setting is disabled for the entire device.
+
+This way we can prompt the user to go to the correct place in the settings
+application and make sure our application is aware if the user disables/enables
+a setting or denies/grants a permission.
+
+Currently we've only added a way to extract the 'location' setting.
+We will add more in the future based on our requirements.
+
 ## Getting started
 
 `$ npm install react-native-settings --save`
@@ -15,7 +33,7 @@ In your manifest file under:
 ``` xml
 <application>
 ```
-addd the following:
+add the following:
 
 ``` xml
 <receiver android:name="io.rumors.reactnativesettings.GpsLocationReceiver">
