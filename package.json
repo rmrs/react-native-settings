@@ -1,0 +1,24 @@
+{
+  "name": "react-native-settings",
+  "version": "0.0.1",
+  "description": "Access iOS and Android device settings from React Native",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rmrs/react-native-settings.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-settings",
+    "settings"
+  ],
+  "author": "Erez Rokah <erez@rumors.io>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": "^0.41.2"    
+  },
+  "bugs": {
+    "url": "https://github.com/rmrs/react-native-settings/issues"
+  },
+  "homepage": "https://github.com/rmrs/react-native-settings#readme"
+}
