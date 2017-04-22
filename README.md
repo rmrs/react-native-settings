@@ -12,17 +12,19 @@
 #### Android
 Add the following to your manifest file:
 
-`<action android:name="android.location.PROVIDERS_CHANGED" />`
-
+``` xml
+<action android:name="android.location.PROVIDERS_CHANGED" />
+```
 and under `<application>` add:
 
-`<receiver android:name="io.rumors.reactnativesettings.GpsLocationReceiver">
+``` xml
+<receiver android:name="io.rumors.reactnativesettings.GpsLocationReceiver">
   <intent-filter>
       <action android:name="android.location.PROVIDERS_CHANGED" />
       <category android:name="android.intent.category.DEFAULT" />
   </intent-filter>
 </receiver>`
-
+```
 ### Manual installation
 
 
