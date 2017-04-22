@@ -10,12 +10,12 @@
 `$ react-native link react-native-settings`
 
 #### Android
-Add the following to your manifest file:
+In your manifest file under:
 
 ``` xml
-<action android:name="android.location.PROVIDERS_CHANGED" />
+<application>
 ```
-and under `<application>` add:
+addd the following:
 
 ``` xml
 <receiver android:name="io.rumors.reactnativesettings.GpsLocationReceiver">
