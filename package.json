@@ -1,6 +1,6 @@
 {
   "name": "react-native-settings",
-  "version": "v0.0.1-alpha1",
+  "version": "v0.0.1-alpha2",
   "description": "Access iOS and Android device settings from React Native",
   "main": "index.js",
   "repository": {
@@ -15,7 +15,7 @@
   "author": "Erez Rokah <erez@rumors.io>",
   "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.41.2"
+    "react-native": ">=0.40"
   },
   "bugs": {
     "url": "https://github.com/rmrs/react-native-settings/issues"
