@@ -1,11 +1,11 @@
-package io.rumors.reactnativesettings;
+package io.rumors.reactnativesettings.handlers;
 
-import android.location.LocationManager;
 import android.location.LocationManager;
 import android.content.Context;
-import android.app.Activity;
 
-public class LocationSettingsHandler implements SettingsHandler {
+import io.rumors.reactnativesettings.Constants;
+
+public class LocationSettingsHandler implements SettingsHandler<String> {
   private Context mContext;
 
   public LocationSettingsHandler(Context context) {
@@ -26,9 +26,9 @@ public class LocationSettingsHandler implements SettingsHandler {
     } catch(Exception ex) {}
 
     if (gps_enabled || network_enabled) {
-      return RNSettingsModule.ENABLED;
+      return Constants.ENABLED;
     }
 
-    return RNSettingsModule.DISABLED;
+    return Constants.DISABLED;
   }
 }

@@ -21,24 +21,29 @@ import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import io.rumors.reactnativesettings.handlers.*;
+
 import java.util.Map;
 import java.util.HashMap;
 
 public class RNSettingsModule extends ReactContextBaseJavaModule {
-
+  //javascript event names
   private static final String GPS_PROVIDER_EVENT = "GPS_PROVIDER_EVENT";
+  private static final String AIRPLANE_MODE_EVENT = "AIRPLANE_MODE_EVENT";
 
+  //error values
   private static final String E_FAILED_TO_GET_SETTINGS = "E_FAILED_TO_GET_SETTINGS";
   private static final String E_FAILED_TO_OPEN_SETTINGS = "E_FAILED_TO_OPEN_SETTINGS";
 
-  public static final String LOCATION_SETTING = "LOCATION_SETTING";
-  public static final String ENABLED = "ENABLED";
-  public static final String DISABLED = "DISABLED";
-
+  //open settings names
   private static final String ACTION_LOCATION_SOURCE_SETTINGS = "ACTION_LOCATION_SOURCE_SETTINGS";
+  private static final String ACTION_AIRPLANE_MODE_SETTINGS = "ACTION_AIRPLANE_MODE_SETTINGS";
 
-  private Map<String, Integer> requestCodes = new HashMap<String, Integer>();
-  private Map<String, SettingsHandler> settingsHandlers = new HashMap<String, SettingsHandler>();
+  private Map<String, Integer> mOpenSettingToRequestCode = new HashMap<String, Integer>();
+  private Map<Integer, String> mRequestCodeToOpenSetting = new HashMap<Integer, String>();
+
+  private Map<String, String> mOpenSettingToSettingsName = new HashMap<String, String>();
+  private Map<String, SettingsHandler> mSettingsHandlers = new HashMap<String, SettingsHandler>();
 
   private Promise mSettingsPromise;
 
@@ -47,41 +52,64 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
   private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent intent) {
-      if (requestCodes.get(Settings.ACTION_LOCATION_SOURCE_SETTINGS) == requestCode) {
-        if (mSettingsPromise != null) {
-          mSettingsPromise.resolve(settingsHandlers.get(LOCATION_SETTING).getSetting());
-          mSettingsPromise = null;
-        }
+      String openedSetting = mRequestCodeToOpenSetting.get(requestCode);
+      if (openedSetting != null && mSettingsPromise != null) {
+        String settingsName = mOpenSettingToSettingsName.get(openedSetting);
+        mSettingsPromise.resolve(mSettingsHandlers.get(settingsName).getSetting());
+        mSettingsPromise = null;
       }
     }
   };
+
+  private class LocationReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      String providerSetting = intent.getStringExtra(Constants.LOCATION_SETTING);
+      WritableMap params = Arguments.createMap();
+      params.putString(Constants.LOCATION_SETTING, providerSetting);
+      sendEvent(GPS_PROVIDER_EVENT, params);
+    }
+  }
+
+  private class AirplaneModeReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      String providerSetting = intent.getStringExtra(Constants.AIRPLANE_MODE_SETTING);
+      WritableMap params = Arguments.createMap();
+      params.putString(Constants.AIRPLANE_MODE_SETTING, providerSetting);
+      sendEvent(AIRPLANE_MODE_EVENT, params);
+    }
+  }
 
   private void sendEvent(String eventName, @Nullable WritableMap params) {
     mReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
     .emit(eventName, params);
   }
 
-  private void listenLocationProviderChange(Context reactContext) {
-    IntentFilter intentFilter = new IntentFilter(GpsLocationReceiver.PROVIDERS_CHANGED);
-    reactContext.registerReceiver(new BroadcastReceiver() {
-      @Override
-      public void onReceive(Context context, Intent intent) {
-        String providerSetting = intent.getStringExtra(LOCATION_SETTING);
-        WritableMap params = Arguments.createMap();
-        params.putString(LOCATION_SETTING, providerSetting);
-        sendEvent(GPS_PROVIDER_EVENT, params);
-      }
-    }, intentFilter);
+  private void registerReceiver(Context reactContext, String filter, BroadcastReceiver receiver) {
+    IntentFilter intentFilter = new IntentFilter(filter);
+    reactContext.registerReceiver(receiver, intentFilter);
   }
 
   public RNSettingsModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.mReactContext = reactContext;
 
-    this.listenLocationProviderChange(reactContext);
+    this.registerReceiver(reactContext, Constants.PROVIDERS_CHANGED, new LocationReceiver());
+    this.registerReceiver(reactContext, Constants.AIRPLANE_MODE_CHANGED, new AirplaneModeReceiver());
 
-    settingsHandlers.put(LOCATION_SETTING, new LocationSettingsHandler(reactContext));
-    requestCodes.put(Settings.ACTION_LOCATION_SOURCE_SETTINGS, 0);
+    mSettingsHandlers.put(Constants.LOCATION_SETTING, new LocationSettingsHandler(reactContext));
+    mSettingsHandlers.put(Constants.AIRPLANE_MODE_SETTING, new AirplaneModeSettingsHandler(reactContext));
+
+    mOpenSettingToRequestCode.put(Settings.ACTION_LOCATION_SOURCE_SETTINGS, 0);
+    mOpenSettingToRequestCode.put(Settings.ACTION_AIRPLANE_MODE_SETTINGS, 1);
+
+    mRequestCodeToOpenSetting.put(0, Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+    mRequestCodeToOpenSetting.put(1, Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+
+    mOpenSettingToSettingsName.put(Settings.ACTION_LOCATION_SOURCE_SETTINGS, Constants.LOCATION_SETTING);
+    mOpenSettingToSettingsName.put(Settings.ACTION_AIRPLANE_MODE_SETTINGS, Constants.AIRPLANE_MODE_SETTING);
+
     reactContext.addActivityEventListener(mActivityEventListener);
   }
 
@@ -96,20 +124,23 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
 
     //event listeners
     constants.put(GPS_PROVIDER_EVENT, GPS_PROVIDER_EVENT);
+    constants.put(AIRPLANE_MODE_EVENT, AIRPLANE_MODE_EVENT);
 
     //get settings
-    constants.put(LOCATION_SETTING, LOCATION_SETTING);
-    constants.put(ENABLED, ENABLED);
-    constants.put(DISABLED, DISABLED);
+    constants.put(Constants.LOCATION_SETTING, Constants.LOCATION_SETTING);
+    constants.put(Constants.AIRPLANE_MODE_SETTING, Constants.AIRPLANE_MODE_SETTING);
+    constants.put(Constants.ENABLED, Constants.ENABLED);
+    constants.put(Constants.DISABLED, Constants.DISABLED);
 
     //open settings
     constants.put(ACTION_LOCATION_SOURCE_SETTINGS, Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+    constants.put(ACTION_AIRPLANE_MODE_SETTINGS, Settings.ACTION_AIRPLANE_MODE_SETTINGS);
     return constants;
   }
 
   @ReactMethod
   public void getSetting(String setting, final Promise promise) {
-    SettingsHandler handler = settingsHandlers.get(setting);
+    SettingsHandler handler = mSettingsHandlers.get(setting);
     if (handler != null) {
       promise.resolve(handler.getSetting());
     } else {
@@ -124,7 +155,7 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
     try {
       Activity currentActivity = getCurrentActivity();
       final Intent settingsIntent = new Intent(setting);
-      currentActivity.startActivityForResult(settingsIntent, requestCodes.get(setting));
+      currentActivity.startActivityForResult(settingsIntent, mOpenSettingToRequestCode.get(setting));
     } catch (Exception e) {
       mSettingsPromise.reject(E_FAILED_TO_OPEN_SETTINGS, e);
       mSettingsPromise = null;

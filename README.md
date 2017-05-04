@@ -36,12 +36,18 @@ In your manifest file under:
 add the following:
 
 ``` xml
-<receiver android:name="io.rumors.reactnativesettings.GpsLocationReceiver">
+<receiver android:name="io.rumors.reactnativesettings.receivers.GpsLocationReceiver">
   <intent-filter>
       <action android:name="android.location.PROVIDERS_CHANGED" />
       <category android:name="android.intent.category.DEFAULT" />
   </intent-filter>
-</receiver>`
+</receiver>
+
+<receiver android:enabled="true" android:name="io.rumors.reactnativesettings.receivers.AirplaneModeReceiver">
+    <intent-filter>
+        <action android:name="android.intent.action.AIRPLANE_MODE"/>
+    </intent-filter>
+</receiver>
 ```
 ### Manual installation
 
@@ -85,6 +91,19 @@ RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
 ```
 
 #### Android only:
+
+```javascript
+import RNSettings from 'react-native-settings'
+
+RNSettings.getSetting(RNSettings.AIRPLANE_MODE_SETTING).then(result => {
+  if (result == RNSettings.ENABLED) {
+    console.log('airplane mode is enabled')
+  } else {
+    console.log('airplane mode is disabled')
+  }
+})
+```
+
 ##### Open settings application in a specific setting
 ```javascript
 import RNSettings from 'react-native-settings'
@@ -93,6 +112,12 @@ RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).
 then((result) => {
 if (result === RNSettings.ENABLED) {
   console.log('location is enabled')
+}
+
+RNSettings.openSetting(RNSettings.ACTION_AIRPLANE_MODE_SETTINGS).
+then((result) => {
+if (result === RNSettings.ENABLED) {
+  console.log('airplane mode is enabled')
 }
 ```
 
@@ -107,5 +132,12 @@ _handleGPSProviderEvent = (e) => {
   }
 }
 
+_handleAirplaneModeEvent = (e) => {
+  if (e[RNSettings.AIRPLANE_MODE_SETTING] === RNSettings.ENABLED) {
+    console.log('airplane mode was enabled')
+  }
+}
+
 DeviceEventEmitter.addListener(RNSettings.GPS_PROVIDER_EVENT, this._handleGPSProviderEvent)
+DeviceEventEmitter.addListener(RNSettings.AIRPLANE_MODE_EVENT, this._handleAirplaneModeEvent)
 ```
