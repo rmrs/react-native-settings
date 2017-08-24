@@ -3236,6 +3236,10 @@ react-devtools-core@2.3.1:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
+"react-native-settings@git+ssh://git@github.com/rmrs/react-native-settings.git#master":
+  version "0.0.1-alpha4"
+  resolved "git+ssh://git@github.com/rmrs/react-native-settings.git#c5bfe1cbdab9c93aef06181fb491ab72e6813151"
+
 react-native@0.47.2:
   version "0.47.2"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.47.2.tgz#5e55cd84e4947123c86d36ea6f95ab9ed2d0cb19"

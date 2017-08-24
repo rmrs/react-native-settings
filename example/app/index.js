@@ -8,6 +8,8 @@ import {
   DeviceEventEmitter,
   Button,
   Dimensions,
+  Platform,
+  Alert,
 } from 'react-native'
 import RNSettings from 'react-native-settings'
 
@@ -15,6 +17,8 @@ type State = {
   location_on: boolean,
   airplane_on: boolean,
 }
+
+type Props = {}
 
 const Screen = {
   width: Dimensions.get('window').width,
@@ -46,6 +50,13 @@ export default class example extends Component<void, void, State> {
   }
 
   _openLocationSetting = () => {
+    if (Platform.OS === 'ios') {
+      Alert.alert(
+        'Not supported!',
+        'Not supported on IOS just yet. Stay tuned ~_~'
+      )
+      return
+    }
     RNSettings.openSetting(
       RNSettings.ACTION_LOCATION_SOURCE_SETTINGS
     ).then(result => {
@@ -57,6 +68,13 @@ export default class example extends Component<void, void, State> {
     })
   }
   _openAirplaneSetting = () => {
+    if (Platform.OS === 'ios') {
+      Alert.alert(
+        'Not supported!',
+        'Not supported on IOS just yet. Stay tuned ~_~'
+      )
+      return
+    }
     RNSettings.openSetting(
       RNSettings.ACTION_AIRPLANE_MODE_SETTINGS
     ).then(result => {
@@ -77,73 +95,90 @@ export default class example extends Component<void, void, State> {
       }
     })
 
-    // Android only
-    RNSettings.getSetting(RNSettings.AIRPLANE_MODE_SETTING).then(result => {
-      if (result === RNSettings.ENABLED) {
-        this.setState({ airplane_on: true })
-      } else {
-        this.setState({ airplane_on: false })
-      }
-    })
+    if (Platform.OS === 'android') {
+      RNSettings.getSetting(RNSettings.AIRPLANE_MODE_SETTING).then(result => {
+        if (result === RNSettings.ENABLED) {
+          this.setState({ airplane_on: true })
+        } else {
+          this.setState({ airplane_on: false })
+        }
+      })
 
-    // Android only - register to gps provider change event
-    DeviceEventEmitter.addListener(
-      RNSettings.GPS_PROVIDER_EVENT,
-      this._handleGPSProviderEvent
-    )
-    // Android only - register to airplane mode change event
-    DeviceEventEmitter.addListener(
-      RNSettings.AIRPLANE_MODE_EVENT,
-      this._handleAirplaneModeEvent
-    )
+      // Register to gps provider change event
+      DeviceEventEmitter.addListener(
+        RNSettings.GPS_PROVIDER_EVENT,
+        this._handleGPSProviderEvent
+      )
+      // Register to airplane mode change event
+      DeviceEventEmitter.addListener(
+        RNSettings.AIRPLANE_MODE_EVENT,
+        this._handleAirplaneModeEvent
+      )
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ marginBottom: 20 }}>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
           <Text style={styles.welcome}>react-native-settings</Text>
         </View>
+        <SettingRow
+          name="Location"
+          on={this.state.location_on}
+          onPress={this._openLocationSetting}
+          onPressAvailable={Platform.os !== 'ios'}
+        />
+        <SettingRow
+          name="Airplane Mode"
+          on={this.state.airplacne_on}
+          onAvailable={Platform.os !== 'ios'}
+          onPress={this._openAirplaneSetting}
+          onPressAvailable={Platform.os !== 'ios'}
+        />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: Screen.width / 1.5,
-            marginBottom: 20,
-          }}
-        >
-          <Text style={{ fontSize: 18 }}>Location:</Text>
-          {this.state.location_on
-            ? <Text style={{ color: 'green', fontSize: 18 }}> ON</Text>
-            : <Text style={{ color: 'red', fontSize: 18 }}> OFF</Text>}
-
-          <Button title="Change" onPress={this._openLocationSetting} />
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: Screen.width / 1.5,
-            marginBottom: 20,
-          }}
-        >
-          <Text style={{ fontSize: 18 }}>Airplane Mode:</Text>
-          {this.state.airplane_on
-            ? <Text style={{ color: 'green', fontSize: 18 }}> ON</Text>
-            : <Text style={{ color: 'red', fontSize: 18 }}> OFF</Text>}
-          <Button title="Change" onPress={this._openAirplaneSetting} />
-        </View>
+        <Text style={{ marginTop: 40 }}> * Not supported yet on iOS.</Text>
       </View>
     )
   }
 }
 
+type SettingRowProps = {
+  name: string,
+  on: boolean,
+  onAvailable: boolean,
+  onPress: () => void,
+  onPressAvailable: boolean,
+}
+
+SettingRow = (props: SettingRowProp) => {
+  let status = <Text />
+  const is_not_available = Platform.OS === 'ios' && !props.onAvailable
+  if (props.onAvailable) {
+    status = <Text style={{ color: 'black', fontSize: 18 }}> N/A*</Text>
+  } else {
+    status = props.on
+      ? <Text style={{ color: 'green', fontSize: 18 }}> ON</Text>
+      : <Text style={{ color: 'red', fontSize: 18 }}> OFF</Text>
+  }
+
+  return (
+    <View style={styles.settingRowContainer}>
+      <Text style={{ fontSize: 18 }}>
+        {props.name}:
+      </Text>
+      {status}
+      <Button
+        title={props.onPressAvailable ? 'N/A*' : 'Change'}
+        onPress={props.onPress}
+      />
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 6,
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
@@ -151,6 +186,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  settingRowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: Screen.width / 1.5,
+    marginBottom: 20,
   },
 })
 
