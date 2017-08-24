@@ -19,6 +19,8 @@ a setting or denies/grants a permission.
 Currently we've only added a way to extract the 'location' setting.
 We will add more in the future based on our requirements.
 
+[`react-native example`](https://github.com/rmrs/react-native-settings/tree/master/example)  for both Android and iOS.
+
 ## Getting started
 
 `$ npm install react-native-settings --save`

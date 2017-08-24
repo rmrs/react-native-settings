@@ -118,6 +118,10 @@ export default class example extends Component<void, void, State> {
   }
 
   render() {
+    const asterisk =
+      Platform.OS === 'ios'
+        ? <Text style={{ marginTop: 40 }}> * Not supported yet on iOS.</Text>
+        : <Text />
     return (
       <View style={styles.container}>
         <View style={{ marginTop: 20, marginBottom: 20 }}>
@@ -126,18 +130,18 @@ export default class example extends Component<void, void, State> {
         <SettingRow
           name="Location"
           on={this.state.location_on}
+          onAvailable={true}
           onPress={this._openLocationSetting}
-          onPressAvailable={Platform.os !== 'ios'}
+          onPressAvailable={Platform.OS !== 'ios'}
         />
         <SettingRow
           name="Airplane Mode"
-          on={this.state.airplacne_on}
-          onAvailable={Platform.os !== 'ios'}
+          on={this.state.airplane_on}
+          onAvailable={Platform.OS !== 'ios'}
           onPress={this._openAirplaneSetting}
-          onPressAvailable={Platform.os !== 'ios'}
+          onPressAvailable={Platform.OS !== 'ios'}
         />
-
-        <Text style={{ marginTop: 40 }}> * Not supported yet on iOS.</Text>
+        {asterisk}
       </View>
     )
   }
@@ -153,13 +157,12 @@ type SettingRowProps = {
 
 SettingRow = (props: SettingRowProp) => {
   let status = <Text />
-  const is_not_available = Platform.OS === 'ios' && !props.onAvailable
   if (props.onAvailable) {
-    status = <Text style={{ color: 'black', fontSize: 18 }}> N/A*</Text>
-  } else {
     status = props.on
       ? <Text style={{ color: 'green', fontSize: 18 }}> ON</Text>
       : <Text style={{ color: 'red', fontSize: 18 }}> OFF</Text>
+  } else {
+    status = <Text style={{ color: 'black', fontSize: 18 }}> N/A*</Text>
   }
 
   return (
@@ -169,7 +172,7 @@ SettingRow = (props: SettingRowProp) => {
       </Text>
       {status}
       <Button
-        title={props.onPressAvailable ? 'N/A*' : 'Change'}
+        title={props.onPressAvailable ? 'Change' : 'N/A*'}
         onPress={props.onPress}
       />
     </View>
