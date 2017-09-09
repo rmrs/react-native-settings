@@ -2,6 +2,9 @@ package io.rumors.reactnativesettings.handlers;
 
 import android.location.LocationManager;
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
+import android.text.TextUtils;
 
 import io.rumors.reactnativesettings.Constants;
 
@@ -12,23 +15,47 @@ public class LocationSettingsHandler implements SettingsHandler<String> {
     this.mContext = context;
   }
 
-  public String getSetting() {
-    LocationManager LocationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
-    boolean gps_enabled = false;
-    boolean network_enabled = false;
+  public static int getLocationMode(Context context) {
+    int locationMode = 0;
+    String locationProviders;
 
-    try {
-        gps_enabled = LocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    } catch(Exception ex) {}
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      try {
+        locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
 
-    try {
-        network_enabled = LocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    } catch(Exception ex) {}
+      } catch (Settings.SettingNotFoundException e) {
+        e.printStackTrace();
+      }
 
-    if (gps_enabled || network_enabled) {
-      return Constants.ENABLED;
+
+    } else {
+      locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+      if (TextUtils.isEmpty(locationProviders)) {
+        locationMode = Settings.Secure.LOCATION_MODE_OFF;
+      }
+      else if (locationProviders.contains(LocationManager.GPS_PROVIDER) && locationProviders.contains(LocationManager.NETWORK_PROVIDER)) {
+        locationMode = Settings.Secure.LOCATION_MODE_HIGH_ACCURACY;
+      }
+      else if (locationProviders.contains(LocationManager.GPS_PROVIDER)) {
+        locationMode = Settings.Secure.LOCATION_MODE_SENSORS_ONLY;
+      }
+      else if (locationProviders.contains(LocationManager.NETWORK_PROVIDER)) {
+        locationMode = Settings.Secure.LOCATION_MODE_BATTERY_SAVING;
+      }
+
     }
 
-    return Constants.DISABLED;
+    return locationMode;
+  }
+
+  public String getSetting() {
+    if(getLocationMode(mContext) == Settings.Secure.LOCATION_MODE_OFF)
+    {
+      return Constants.DISABLED;
+    }
+    else
+      return Constants.ENABLED;
+
   }
 }
