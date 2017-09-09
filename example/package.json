@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "16.0.0-alpha.12",
     "react-native": "0.47.2",
-    "react-native-settings": "git+ssh://git@github.com/rmrs/react-native-settings.git#master"
+    "react-native-settings": "file:../"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
