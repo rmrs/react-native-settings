@@ -16,18 +16,15 @@ public class LocationSettingsHandler implements SettingsHandler<String> {
   }
 
   public static int getLocationMode(Context context) {
-    int locationMode = 0;
+    int locationMode = Settings.Secure.LOCATION_MODE_OFF;
     String locationProviders;
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       try {
         locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-
       } catch (Settings.SettingNotFoundException e) {
         e.printStackTrace();
       }
-
-
     } else {
       locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
