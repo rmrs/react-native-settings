@@ -14,6 +14,11 @@ NSString *const ENABLED = @"ENABLED";
     return dispatch_get_main_queue();
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
+
 RCT_EXPORT_MODULE();
 
 RCT_REMAP_METHOD(getSetting, getSetting:(NSString *)setting resolve:(RCTPromiseResolveBlock)resolve
