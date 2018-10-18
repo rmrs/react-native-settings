@@ -1,17 +1,17 @@
 package com.example;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 
-import com.facebook.react.ReactApplication;
 import io.rumors.reactnativesettings.RNSettingsPackage;
+import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
+import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
+
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
-import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
 
 import java.util.Arrays;
 import java.util.List;
