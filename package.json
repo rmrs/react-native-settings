@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/rmrs/react-native-settings.git"
   },
+  "scripts": {    
+    "tag": "git tag \"v$npm_package_version\" && git push --tags",
+    "prepublishOnly": "yarn run tag"
+  },
   "keywords": [
     "react-native",
     "react-native-settings",
