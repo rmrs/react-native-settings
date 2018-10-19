@@ -13,20 +13,7 @@
     android:allowBackup="true"
     android:label="@string/app_name"
     android:icon="@mipmap/ic_launcher"
-    android:theme="@style/AppTheme">
-
-    <receiver android:name="io.rumors.reactnativesettings.receivers.GpsLocationReceiver">
-      <intent-filter>
-        <action android:name="android.location.PROVIDERS_CHANGED" />
-        <category android:name="android.intent.category.DEFAULT" />
-      </intent-filter>
-    </receiver>
-
-    <receiver android:enabled="true" android:name="io.rumors.reactnativesettings.receivers.AirplaneModeReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.AIRPLANE_MODE"/>
-      </intent-filter>
-    </receiver>
+    android:theme="@style/AppTheme">   
 
     <activity
       android:name=".MainActivity"

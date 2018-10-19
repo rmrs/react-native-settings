@@ -1,7 +1,7 @@
 
 # react-native-settings
 
-## Still very much in Alpha!
+## Still very much in Alpha
 
 We created this module to allow us to query for specific device settings.
 For example we wanted to know if the GPS is on/off without using 'react-native'
@@ -16,8 +16,8 @@ This way we can prompt the user to go to the correct place in the settings
 application and make sure our application is aware that the user disables/enables
 a setting or denies/grants a permission.
 
-Currently we've only added a way to extract the 'location' setting.
-We will add more in the future based on our requirements.
+Currently we've only added a way to extract the 'location' setting (and airplane mode on Android).
+We will add more in the future based on requirements.
 
 [`react-native example`](https://github.com/rmrs/react-native-settings/tree/master/example)  for both Android and iOS.
 
@@ -30,29 +30,35 @@ We will add more in the future based on our requirements.
 `$ react-native link react-native-settings`
 
 #### Android
-In your manifest file under:
 
-``` xml
-<application>
+In your `MainApplication.java` file register the receivers:
+
+``` java
+...
+
+import android.content.IntentFilter;
+import io.rumors.reactnativesettings.RNSettingsPackage;
+import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
+import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
+
+...
+
+public class MainApplication extends Application implements ReactApplication {
+
+  ...
+
+  @Override
+  public void onCreate() {
+
+    ...
+
+    registerReceiver(new GpsLocationReceiver(), new IntentFilter("android.location.PROVIDERS_CHANGED"));
+    registerReceiver(new AirplaneModeReceiver(), new IntentFilter("android.intent.action.AIRPLANE_MODE"));
+  }
+}
 ```
-add the following:
 
-``` xml
-<receiver android:name="io.rumors.reactnativesettings.receivers.GpsLocationReceiver">
-  <intent-filter>
-      <action android:name="android.location.PROVIDERS_CHANGED" />
-      <category android:name="android.intent.category.DEFAULT" />
-  </intent-filter>
-</receiver>
-
-<receiver android:enabled="true" android:name="io.rumors.reactnativesettings.receivers.AirplaneModeReceiver">
-    <intent-filter>
-        <action android:name="android.intent.action.AIRPLANE_MODE"/>
-    </intent-filter>
-</receiver>
-```
 ### Manual installation
-
 
 #### iOS
 
@@ -64,22 +70,29 @@ add the following:
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainApplication.java`
-  - Add `import io.rumors.reactnativesettings.RNSettingsPackage;` to the imports at the top of the file
-  - Add `new RNSettingsPackage()` to the list returned by the `getPackages()` method
+
+- Add `import io.rumors.reactnativesettings.RNSettingsPackage;` to the imports at the top of the file
+- Add `new RNSettingsPackage()` to the list returned by the `getPackages()` method
+
 2. Append the following lines to `android/settings.gradle`:
-  	```
-  	include ':react-native-settings'
-  	project(':react-native-settings').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-settings/android')
-  	```
+
+```java
+include ':react-native-settings'
+project(':react-native-settings').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-settings/android')
+```
+
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
-      compile project(':react-native-settings')
-  	```
+
+```java
+  implementation project(':react-native-settings')
+```
 
 ## Usage
-#### Android and iOS
 
-##### Getting a setting:
+### Android and iOS
+
+#### Getting a setting
+
 ```javascript
 import RNSettings from 'react-native-settings'
 
@@ -92,7 +105,7 @@ RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
 })
 ```
 
-#### Android only:
+#### Android only
 
 ```javascript
 import RNSettings from 'react-native-settings'
@@ -107,6 +120,7 @@ RNSettings.getSetting(RNSettings.AIRPLANE_MODE_SETTING).then(result => {
 ```
 
 ##### Open settings application in a specific setting
+
 ```javascript
 import RNSettings from 'react-native-settings'
 
@@ -124,6 +138,7 @@ if (result === RNSettings.ENABLED) {
 ```
 
 ##### Listen to setting change event (when applicable)
+
 ```javascript
 import RNSettings from 'react-native-settings'
 import { DeviceEventEmitter } from 'react-native'
