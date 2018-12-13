@@ -10,13 +10,11 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "erez@rumors.io" }
-  s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/rmrs/react-native-settings.git", :tag => "master" }
+  s.platform     = :ios, "9.0"
+  s.source       = { :git => "https://github.com/rmrs/react-native-settings.git", :tag => "v0.0.1-alpha7" }
   s.source_files  = "RNSettings/**/*.{h,m}"
   s.requires_arc = true
 
 
   s.dependency "React"
-  #s.dependency "others"
-
 end
