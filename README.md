@@ -1,8 +1,6 @@
 
 # react-native-settings
 
-## Still very much in Alpha
-
 We created this module to allow us to query for specific device settings.
 For example we wanted to know if the GPS is on/off without using 'react-native'
 'geolocation' since using it will trigger a permission pop up.
