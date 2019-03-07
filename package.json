@@ -16,7 +16,7 @@
     "react-native-settings",
     "settings"
   ],
-  "author": "Erez Rokah <erez@rumors.io>",
+  "author": "Erez Rokah <erezrokah@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "react-native": ">=0.40"

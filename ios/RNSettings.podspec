@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/rmrs/react-native-settings"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "author" => "erez@rumors.io" }
+  s.author             = { "author" => "erezrokah@gmail.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/rmrs/react-native-settings.git", :tag => s.version.to_s }
   s.source_files  = "RNSettings/**/*.{h,m}"
