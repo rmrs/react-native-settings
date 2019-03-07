@@ -11,13 +11,17 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
+def projectVar(name, fallback) {
+    return project.findProperty(name) ?: fallback
+}
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion projectVar('compileSdkVersion', 23)
+    buildToolsVersion projectVar('buildToolsVersion', '23.0.1')
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion projectVar('targetSdkVersion', 22)
         versionCode 1
         versionName "1.0"
     }
