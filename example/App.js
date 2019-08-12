@@ -2,7 +2,7 @@
  * @flow
  * @format
  */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,8 +16,8 @@ import {
 import RNSettings from 'react-native-settings';
 
 type State = {
-  location_on: boolean,
-  airplane_on: boolean,
+  locationOn: boolean,
+  airplaneOn: boolean,
 };
 
 const Screen = {
@@ -25,7 +25,7 @@ const Screen = {
   height: Dimensions.get('window').height,
 };
 
-export default class example extends Component<void, void, State> {
+export default class example extends Component<void, State> {
   state: State;
 
   state = { locationOn: false, airplaneOn: false };
@@ -61,7 +61,7 @@ export default class example extends Component<void, void, State> {
     }
   }
 
-  handleGPSProviderEvent = e => {
+  handleGPSProviderEvent = (e: { [string]: string }) => {
     if (e[RNSettings.LOCATION_SETTING] === RNSettings.ENABLED) {
       this.setState({ locationOn: true });
     } else {
@@ -69,7 +69,7 @@ export default class example extends Component<void, void, State> {
     }
   };
 
-  handleAirplaneModeEvent = e => {
+  handleAirplaneModeEvent = (e: { [string]: string }) => {
     if (e[RNSettings.AIRPLANE_MODE_SETTING] === RNSettings.ENABLED) {
       this.setState({ airplaneOn: true });
     } else {
@@ -118,7 +118,10 @@ export default class example extends Component<void, void, State> {
   render() {
     const asterisk =
       Platform.OS === 'ios' ? (
-        <Text style={{ marginTop: 40 }}> * Not supported yet on iOS.</Text>
+        <Text style={styles.notSupportedText}>
+          {' '}
+          * Not supported yet on iOS.
+        </Text>
       ) : (
         <Text />
       );
@@ -126,26 +129,28 @@ export default class example extends Component<void, void, State> {
     const { locationOn, airplaneOn } = this.state;
 
     return (
-      <View style={styles.container}>
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Text style={styles.welcome}>react-native-settings</Text>
+      <Fragment>
+        <View style={styles.container}>
+          <View style={styles.title}>
+            <Text style={styles.welcome}>react-native-settings</Text>
+          </View>
+          <SettingRow
+            name="Location"
+            on={locationOn}
+            onAvailable
+            onPress={this.openLocationSetting}
+            onPressAvailable={Platform.OS !== 'ios'}
+          />
+          <SettingRow
+            name="Airplane Mode"
+            on={airplaneOn}
+            onAvailable={Platform.OS !== 'ios'}
+            onPress={this.openAirplaneSetting}
+            onPressAvailable={Platform.OS !== 'ios'}
+          />
+          {asterisk}
         </View>
-        <SettingRow
-          name="Location"
-          on={locationOn}
-          onAvailable
-          onPress={this.openLocationSetting}
-          onPressAvailable={Platform.OS !== 'ios'}
-        />
-        <SettingRow
-          name="Airplane Mode"
-          on={airplaneOn}
-          onAvailable={Platform.OS !== 'ios'}
-          onPress={this.openAirplaneSetting}
-          onPressAvailable={Platform.OS !== 'ios'}
-        />
-        {asterisk}
-      </View>
+      </Fragment>
     );
   }
 }
@@ -169,17 +174,17 @@ const SettingRow = ({
 
   if (onAvailable) {
     status = on ? (
-      <Text style={{ color: 'green', fontSize: 18 }}> ON</Text>
+      <Text style={styles.greenText}> ON</Text>
     ) : (
-      <Text style={{ color: 'red', fontSize: 18 }}> OFF</Text>
+      <Text style={styles.redText}> OFF</Text>
     );
   } else {
-    status = <Text style={{ color: 'black', fontSize: 18 }}> N/A*</Text>;
+    status = <Text style={styles.blackText}> N/A*</Text>;
   }
 
   return (
     <View style={styles.settingRowContainer}>
-      <Text style={{ fontSize: 18 }}>{name}:</Text>
+      <Text style={styles.text}>{name}:</Text>
       {status}
       <Button title={onPressAvailable ? 'Change' : 'N/A*'} onPress={onPress} />
     </View>
@@ -204,4 +209,10 @@ const styles = StyleSheet.create({
     width: Screen.width / 1.5,
     marginBottom: 20,
   },
+  title: { marginTop: 20, marginBottom: 20 },
+  notSupportedText: { marginTop: 40 },
+  redText: { color: 'red', fontSize: 18 },
+  greenText: { color: 'green', fontSize: 18 },
+  blackText: { color: 'black', fontSize: 18 },
+  text: { fontSize: 18 },
 });
