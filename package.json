@@ -1,13 +1,13 @@
 {
   "name": "react-native-settings",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Access iOS and Android device settings from React Native",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/rmrs/react-native-settings.git"
   },
-  "scripts": {    
+  "scripts": {
     "tag": "git tag \"v$npm_package_version\" && git push --tags",
     "prepublishOnly": "yarn run tag"
   },
