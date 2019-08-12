@@ -4,20 +4,33 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --write '*.js' '**/*.js'",
+    "lint": "eslint '*.js' '**/*.js'",
+    "flow": "flow"
   },
   "dependencies": {
-    "@babel/runtime": "^7.1.2",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.1",
+    "react": "16.8.3",
+    "react-native": "0.59.0",
     "react-native-settings": "file:../"
   },
   "devDependencies": {
-    "babel-jest": "^23.6.0",
-    "babel-preset-react-native": "^4.0.1",
-    "jest": "^23.6.0",
-    "react-test-renderer": "^16.5.2",
-    "schedule": "0.4.0"
+    "@babel/core": "^7.4.3",
+    "@babel/runtime": "^7.4.3",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.7.1",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "flow-bin": "0.92.0",
+    "jest": "^24.7.1",
+    "metro-react-native-babel-preset": "^0.53.1",
+    "prettier": "^1.18.2",
+    "react-test-renderer": "16.8.3"
   },
   "jest": {
     "preset": "react-native"
