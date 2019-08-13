@@ -3,21 +3,29 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "start": "react-native start",
+    "test": "jest",
+    "prettier": "prettier --write '*.js' '**/*.js'",
+    "lint": "eslint .",
+    "flow": "flow"
   },
   "dependencies": {
-    "@babel/runtime": "^7.1.2",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.1",
+    "react": "16.8.6",
+    "react-native": "0.60.4",
     "react-native-settings": "file:../"
   },
   "devDependencies": {
-    "babel-jest": "^23.6.0",
-    "babel-preset-react-native": "^4.0.1",
-    "jest": "^23.6.0",
-    "react-test-renderer": "^16.5.2",
-    "schedule": "0.4.0"
+    "@babel/core": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.8.0",
+    "eslint": "^6.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "flow-bin": "0.98.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.55.0",
+    "prettier": "^1.18.2",
+    "react-test-renderer": "16.8.6"
   },
   "jest": {
     "preset": "react-native"

@@ -1,12 +1,8 @@
 package com.example;
 
 import android.app.Application;
-import android.content.IntentFilter;
 
-import io.rumors.reactnativesettings.RNSettingsPackage;
-import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
-import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
-
+import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -15,6 +11,11 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
+
+import android.content.IntentFilter;
+
+import io.rumors.reactnativesettings.receivers.GpsLocationReceiver;
+import io.rumors.reactnativesettings.receivers.AirplaneModeReceiver;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -26,10 +27,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new RNSettingsPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+
+      return packages;
     }
 
     @Override
@@ -47,7 +48,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    
+
     registerReceiver(new GpsLocationReceiver(), new IntentFilter("android.location.PROVIDERS_CHANGED"));
     registerReceiver(new AirplaneModeReceiver(), new IntentFilter("android.intent.action.AIRPLANE_MODE"));
   }
