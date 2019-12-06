@@ -1,4 +1,3 @@
-
 # react-native-settings
 
 We created this module to allow us to query for specific device settings.
@@ -17,7 +16,7 @@ a setting or denies/grants a permission.
 Currently we've only added a way to extract the 'location' setting (and airplane mode on Android).
 We will add more in the future based on requirements.
 
-[`react-native example`](https://github.com/rmrs/react-native-settings/tree/master/example)  for both Android and iOS.
+[`react-native example`](https://github.com/rmrs/react-native-settings/tree/master/example) for both Android and iOS.
 
 ## Getting started
 
@@ -31,7 +30,7 @@ We will add more in the future based on requirements.
 
 In your `MainApplication.java` file register the receivers:
 
-``` java
+```java
 ...
 
 import android.content.IntentFilter;
@@ -92,67 +91,101 @@ project(':react-native-settings').projectDir = new File(rootProject.projectDir, 
 #### Getting a setting
 
 ```javascript
-import RNSettings from 'react-native-settings'
+import RNSettings from 'react-native-settings';
 
 RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
   if (result == RNSettings.ENABLED) {
-    console.log('location is enabled')
+    console.log('location is enabled');
   } else {
-    console.log('location is disabled')
+    console.log('location is disabled');
   }
-})
+});
 ```
 
 #### Android only
 
 ```javascript
-import RNSettings from 'react-native-settings'
+import RNSettings from 'react-native-settings';
 
 RNSettings.getSetting(RNSettings.AIRPLANE_MODE_SETTING).then(result => {
   if (result == RNSettings.ENABLED) {
-    console.log('airplane mode is enabled')
+    console.log('airplane mode is enabled');
   } else {
-    console.log('airplane mode is disabled')
+    console.log('airplane mode is disabled');
   }
-})
+});
+
+RNSettings.getSetting(RNSettings.CAPTIONING_SETTINGS).then(result => {
+  if (result == RNSettings.ENABLED) {
+    console.log('captioning is enabled');
+  } else {
+    console.log('captioning is disabled');
+  }
+});
 ```
 
 ##### Open settings application in a specific setting
 
 ```javascript
-import RNSettings from 'react-native-settings'
+import RNSettings from 'react-native-settings';
 
-RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).
-then((result) => {
-if (result === RNSettings.ENABLED) {
-  console.log('location is enabled')
-}
+RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
+  result => {
+    if (result === RNSettings.ENABLED) {
+      console.log('location is enabled');
+    }
+  },
+);
 
-RNSettings.openSetting(RNSettings.ACTION_AIRPLANE_MODE_SETTINGS).
-then((result) => {
-if (result === RNSettings.ENABLED) {
-  console.log('airplane mode is enabled')
-}
+RNSettings.openSetting(RNSettings.ACTION_AIRPLANE_MODE_SETTINGS).then(
+  result => {
+    if (result === RNSettings.ENABLED) {
+      console.log('airplane mode is enabled');
+    }
+  },
+);
+
+RNSettings.openSetting(RNSettings.ACTION_CAPTIONING_SETTINGS).then(result => {
+  if (result === RNSettings.ENABLED) {
+    console.log('captioning is enabled');
+  }
+});
 ```
 
 ##### Listen to setting change event (when applicable)
 
 ```javascript
-import RNSettings from 'react-native-settings'
-import { DeviceEventEmitter } from 'react-native'
+import RNSettings from 'react-native-settings';
+import { DeviceEventEmitter } from 'react-native';
 
-_handleGPSProviderEvent = (e) => {
+_handleGPSProviderEvent = e => {
   if (e[RNSettings.LOCATION_SETTING] === RNSettings.DISABLED) {
-    console.log('Location was disabled')
+    console.log('Location was disabled');
   }
-}
+};
 
-_handleAirplaneModeEvent = (e) => {
+_handleAirplaneModeEvent = e => {
   if (e[RNSettings.AIRPLANE_MODE_SETTING] === RNSettings.ENABLED) {
-    console.log('airplane mode was enabled')
+    console.log('airplane mode was enabled');
   }
-}
+};
 
-DeviceEventEmitter.addListener(RNSettings.GPS_PROVIDER_EVENT, this._handleGPSProviderEvent)
-DeviceEventEmitter.addListener(RNSettings.AIRPLANE_MODE_EVENT, this._handleAirplaneModeEvent)
+_handleCaptioningEvent = e => {
+  if (e[RNSettings.CAPTIONING_SETTINGS] === RNSettings.ENABLED) {
+    console.log('captioning was enabled');
+  }
+};
+
+DeviceEventEmitter.addListener(
+  RNSettings.GPS_PROVIDER_EVENT,
+  this._handleGPSProviderEvent,
+);
+DeviceEventEmitter.addListener(
+  RNSettings.AIRPLANE_MODE_EVENT,
+  this._handleAirplaneModeEvent,
+);
+DeviceEventEmitter.addListener(
+  RNSettings.CAPTIONING_EVENT,
+  this._handleCaptioningEvent,
+);
 ```

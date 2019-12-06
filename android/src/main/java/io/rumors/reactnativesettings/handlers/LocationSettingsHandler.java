@@ -52,7 +52,8 @@ public class LocationSettingsHandler implements SettingsHandler<String> {
       return Constants.DISABLED;
     }
     else
+    {
       return Constants.ENABLED;
-
+    }
   }
 }
