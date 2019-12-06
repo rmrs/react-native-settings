@@ -1,6 +1,6 @@
 {
   "name": "react-native-settings",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Access iOS and Android device settings from React Native",
   "main": "index.js",
   "repository": {
@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/rmrs/react-native-settings/issues"
   },
-  "homepage": "https://github.com/rmrs/react-native-settings#readme"
+  "homepage": "https://github.com/rmrs/react-native-settings#readme",
+  "devDependencies": {
+    "prettier": "^1.19.1"
+  }
 }

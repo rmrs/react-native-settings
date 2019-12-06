@@ -18,6 +18,7 @@ import RNSettings from 'react-native-settings';
 type State = {
   locationOn: boolean,
   airplaneOn: boolean,
+  captioningOn: boolean,
 };
 
 const Screen = {
@@ -28,7 +29,7 @@ const Screen = {
 export default class example extends Component<void, State> {
   state: State;
 
-  state = { locationOn: false, airplaneOn: false };
+  state = { locationOn: false, airplaneOn: false, captioningOn: false };
 
   componentDidMount() {
     RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
@@ -48,6 +49,14 @@ export default class example extends Component<void, State> {
         }
       });
 
+      RNSettings.getSetting(RNSettings.CAPTIONING_SETTINGS).then(result => {
+        if (result === RNSettings.ENABLED) {
+          this.setState({ captioningOn: true });
+        } else {
+          this.setState({ captioningOn: false });
+        }
+      });
+
       // Register to gps provider change event
       DeviceEventEmitter.addListener(
         RNSettings.GPS_PROVIDER_EVENT,
@@ -57,6 +66,11 @@ export default class example extends Component<void, State> {
       DeviceEventEmitter.addListener(
         RNSettings.AIRPLANE_MODE_EVENT,
         this.handleAirplaneModeEvent,
+      );
+      // Register to captioning change event
+      DeviceEventEmitter.addListener(
+        RNSettings.CAPTIONING_EVENT,
+        this.handleCaptioningEvent,
       );
     }
   }
@@ -74,6 +88,14 @@ export default class example extends Component<void, State> {
       this.setState({ airplaneOn: true });
     } else {
       this.setState({ airplaneOn: false });
+    }
+  };
+
+  handleCaptioningEvent = (e: { [string]: string }) => {
+    if (e[RNSettings.CAPTIONING_SETTINGS] === RNSettings.ENABLED) {
+      this.setState({ captioningOn: true });
+    } else {
+      this.setState({ captioningOn: false });
     }
   };
 
@@ -115,6 +137,25 @@ export default class example extends Component<void, State> {
     );
   };
 
+  openCaptioningSetting = () => {
+    if (Platform.OS === 'ios') {
+      Alert.alert(
+        'Not supported!',
+        'Not supported on IOS just yet. Stay tuned ~_~',
+      );
+      return;
+    }
+    RNSettings.openSetting(RNSettings.ACTION_CAPTIONING_SETTINGS).then(
+      result => {
+        if (result === RNSettings.ENABLED) {
+          this.setState({ captioningOn: true });
+        } else {
+          this.setState({ captioningOn: false });
+        }
+      },
+    );
+  };
+
   render() {
     const asterisk =
       Platform.OS === 'ios' ? (
@@ -126,7 +167,7 @@ export default class example extends Component<void, State> {
         <Text />
       );
 
-    const { locationOn, airplaneOn } = this.state;
+    const { locationOn, airplaneOn, captioningOn } = this.state;
 
     return (
       <Fragment>
@@ -146,6 +187,13 @@ export default class example extends Component<void, State> {
             on={airplaneOn}
             onAvailable={Platform.OS !== 'ios'}
             onPress={this.openAirplaneSetting}
+            onPressAvailable={Platform.OS !== 'ios'}
+          />
+          <SettingRow
+            name="Captioning"
+            on={captioningOn}
+            onAvailable={Platform.OS !== 'ios'}
+            onPress={this.openCaptioningSetting}
             onPressAvailable={Platform.OS !== 'ios'}
           />
           {asterisk}
