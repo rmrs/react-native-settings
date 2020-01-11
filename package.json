@@ -8,8 +8,7 @@
     "url": "https://github.com/rmrs/react-native-settings.git"
   },
   "scripts": {
-    "tag": "git tag \"v$npm_package_version\" && git push --tags",
-    "prepublishOnly": "yarn run tag"
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "react-native",
@@ -29,7 +28,8 @@
     "@commitlint/cli": "^8.3.4",
     "@commitlint/config-conventional": "^8.3.4",
     "husky": "^4.0.6",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "semantic-release": "^16.0.1"
   },
   "husky": {
     "hooks": {
