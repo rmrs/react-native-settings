@@ -12,14 +12,13 @@ import io.rumors.reactnativesettings.Constants;
 
 import java.util.concurrent.CountDownLatch;
 
-
 public class CaptioningChangeListener extends CaptioningManager.CaptioningChangeListener {
   private Context mContext;
 
   private CaptioningManager mCaptioningManager;
 
   private CaptioningManager getCaptioningManager() {
-    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       return (CaptioningManager) mContext.getSystemService(Context.CAPTIONING_SERVICE);
     } else {
       // Android <= 5 bug workaround
@@ -28,19 +27,19 @@ public class CaptioningChangeListener extends CaptioningManager.CaptioningChange
 
       Handler handler = new Handler(Looper.getMainLooper());
       handler.post(new Runnable() {
-          @Override
-          public void run() {
-              mCaptioningManager = (CaptioningManager) mContext.getSystemService(Context.CAPTIONING_SERVICE);
-              latch.countDown();
-          }
+        @Override
+        public void run() {
+          mCaptioningManager = (CaptioningManager) mContext.getSystemService(Context.CAPTIONING_SERVICE);
+          latch.countDown();
+        }
       });
-  
+
       try {
-          latch.await();
+        latch.await();
       } catch (InterruptedException e) {
-          e.printStackTrace();
+        e.printStackTrace();
       }
-  
+
       return mCaptioningManager;
     }
   }
