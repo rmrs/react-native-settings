@@ -1,6 +1,6 @@
 {
   "name": "react-native-settings",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Access iOS and Android device settings from React Native",
   "main": "index.js",
   "repository": {
