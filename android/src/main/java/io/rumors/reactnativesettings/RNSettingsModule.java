@@ -83,8 +83,10 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
   }
 
   private void sendEvent(String eventName, @Nullable WritableMap params) {
-    mReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-    .emit(eventName, params);
+    if (mReactContext.hasActiveCatalystInstance()) {
+      mReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        .emit(eventName, params);
+    }
   }
 
   private void registerReceiver(Context reactContext, String filter, BroadcastReceiver receiver) {
