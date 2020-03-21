@@ -8,7 +8,7 @@ import android.text.TextUtils;
 
 import io.rumors.reactnativesettings.Constants;
 
-public class LocationSettingsHandler implements SettingsHandler<String> {
+public class LocationSettingsHandler implements SettingsHandler {
   private Context mContext;
 
   public LocationSettingsHandler(Context context) {

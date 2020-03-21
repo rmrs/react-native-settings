@@ -1,5 +1,5 @@
 package io.rumors.reactnativesettings.handlers;
 
-public interface SettingsHandler<T> {
-    T getSetting();
+public interface SettingsHandler {
+    String getSetting();
 }

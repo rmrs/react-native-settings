@@ -5,7 +5,7 @@ import android.view.accessibility.CaptioningManager;
 
 import io.rumors.reactnativesettings.Constants;
 
-public class CaptioningSettingsHandler implements SettingsHandler<String> {
+public class CaptioningSettingsHandler implements SettingsHandler {
   private Context mContext;
 
   public CaptioningSettingsHandler(Context context) {
