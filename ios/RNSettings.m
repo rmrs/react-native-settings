@@ -25,10 +25,13 @@ RCT_REMAP_METHOD(getSetting, getSetting:(NSString *)setting resolve:(RCTPromiseR
                   reject:(RCTPromiseRejectBlock)reject)
 {
   if ([setting  isEqual: LOCATION_SETTING]) {
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
     if ([CLLocationManager locationServicesEnabled]) {
-      resolve(ENABLED);
+      result[setting] = ENABLED;
+      resolve(result);
     } else {
-      resolve(DISABLED);
+      result[setting] = DISABLED;
+      resolve(result);
     }
   } else {
     NSError *error = [NSError errorWithDomain:@"world" code:200 userInfo:nil];

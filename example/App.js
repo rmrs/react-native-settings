@@ -23,31 +23,37 @@ export default class example extends Component {
   state = { locationOn: false, airplaneOn: false, captioningOn: false };
 
   componentDidMount() {
-    RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
-      if (result === RNSettings.ENABLED) {
-        this.setState({ locationOn: true });
-      } else {
-        this.setState({ locationOn: false });
-      }
-    });
+    const settings = [
+      {
+        key: RNSettings.LOCATION_SETTING,
+        state: 'locationOn',
+        supported: true,
+      },
+      {
+        key: RNSettings.AIRPLANE_MODE_SETTING,
+        state: 'airplaneOn',
+        supported: Platform.OS === 'android',
+      },
+      {
+        key: RNSettings.CAPTIONING_SETTINGS,
+        state: 'captioningOn',
+        supported: Platform.OS === 'android',
+      },
+    ];
+
+    settings
+      .filter(setting => setting.supported)
+      .forEach(setting =>
+        RNSettings.getSetting(setting.key).then(result => {
+          if (result[setting.key] === RNSettings.ENABLED) {
+            this.setState({ [setting.state]: true });
+          } else {
+            this.setState({ [setting.state]: false });
+          }
+        }),
+      );
 
     if (Platform.OS === 'android') {
-      RNSettings.getSetting(RNSettings.AIRPLANE_MODE_SETTING).then(result => {
-        if (result === RNSettings.ENABLED) {
-          this.setState({ airplaneOn: true });
-        } else {
-          this.setState({ airplaneOn: false });
-        }
-      });
-
-      RNSettings.getSetting(RNSettings.CAPTIONING_SETTINGS).then(result => {
-        if (result === RNSettings.ENABLED) {
-          this.setState({ captioningOn: true });
-        } else {
-          this.setState({ captioningOn: false });
-        }
-      });
-
       // Register to gps provider change event
       DeviceEventEmitter.addListener(
         RNSettings.GPS_PROVIDER_EVENT,

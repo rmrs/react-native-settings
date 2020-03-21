@@ -5,7 +5,7 @@ import android.content.Context;
 
 import io.rumors.reactnativesettings.Constants;
 
-public class AirplaneModeSettingsHandler implements SettingsHandler<String> {
+public class AirplaneModeSettingsHandler implements SettingsHandler {
   private Context mContext;
 
   public AirplaneModeSettingsHandler(Context context) {

@@ -171,7 +171,9 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
   public void getSetting(String setting, final Promise promise) {
     SettingsHandler handler = mSettingsHandlers.get(setting);
     if (handler != null) {
-      promise.resolve(handler.getSetting());
+      WritableMap result = Arguments.createMap();
+      result.putString(setting, handler.getSetting());
+      promise.resolve(result);
     } else {
       promise.reject(E_FAILED_TO_GET_SETTINGS, setting);
     }
