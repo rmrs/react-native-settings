@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rmrs/react-native-settings.git"
+    "url": "git@github.com:rmrs/react-native-settings.git"
   },
   "scripts": {
     "semantic-release": "semantic-release"
