@@ -1,5 +1,4 @@
 /**
- * @flow
  * @format
  */
 import React, { Component, Fragment } from 'react';
@@ -15,20 +14,12 @@ import {
 } from 'react-native';
 import RNSettings from 'react-native-settings';
 
-type State = {
-  locationOn: boolean,
-  airplaneOn: boolean,
-  captioningOn: boolean,
-};
-
 const Screen = {
   width: Dimensions.get('window').width,
   height: Dimensions.get('window').height,
 };
 
-export default class example extends Component<void, State> {
-  state: State;
-
+export default class example extends Component {
   state = { locationOn: false, airplaneOn: false, captioningOn: false };
 
   componentDidMount() {
@@ -75,7 +66,7 @@ export default class example extends Component<void, State> {
     }
   }
 
-  handleGPSProviderEvent = (e: { [string]: string }) => {
+  handleGPSProviderEvent = e => {
     if (e[RNSettings.LOCATION_SETTING] === RNSettings.ENABLED) {
       this.setState({ locationOn: true });
     } else {
@@ -83,7 +74,7 @@ export default class example extends Component<void, State> {
     }
   };
 
-  handleAirplaneModeEvent = (e: { [string]: string }) => {
+  handleAirplaneModeEvent = e => {
     if (e[RNSettings.AIRPLANE_MODE_SETTING] === RNSettings.ENABLED) {
       this.setState({ airplaneOn: true });
     } else {
@@ -91,7 +82,7 @@ export default class example extends Component<void, State> {
     }
   };
 
-  handleCaptioningEvent = (e: { [string]: string }) => {
+  handleCaptioningEvent = e => {
     if (e[RNSettings.CAPTIONING_SETTINGS] === RNSettings.ENABLED) {
       this.setState({ captioningOn: true });
     } else {
@@ -203,21 +194,7 @@ export default class example extends Component<void, State> {
   }
 }
 
-type SettingRowProps = {
-  name: string,
-  on: boolean,
-  onAvailable: boolean,
-  onPress: () => void,
-  onPressAvailable: boolean,
-};
-
-const SettingRow = ({
-  name,
-  onAvailable,
-  onPressAvailable,
-  onPress,
-  on,
-}: SettingRowProps) => {
+const SettingRow = ({ name, onAvailable, onPressAvailable, onPress, on }) => {
   let status = <Text />;
 
   if (onAvailable) {

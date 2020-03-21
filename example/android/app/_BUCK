@@ -13,6 +13,7 @@ load(":build_defs.bzl", "create_aar_targets", "create_jar_targets")
 lib_deps = []
 
 create_aar_targets(glob(["libs/*.aar"]))
+
 create_jar_targets(glob(["libs/*.jar"]))
 
 android_library(
