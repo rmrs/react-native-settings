@@ -30,7 +30,7 @@
     "@semantic-release/git": "^9.0.0",
     "husky": "^4.2.3",
     "prettier": "^2.0.0",
-    "semantic-release": "^17.0.4"
+    "semantic-release": "^19.0.3"
   },
   "husky": {
     "hooks": {
