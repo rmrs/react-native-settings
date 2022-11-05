@@ -1,4 +1,4 @@
-name: Publish To Npm
+name: Release Please
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  publish:
+  release-please:
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3
