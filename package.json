@@ -7,9 +7,6 @@
     "type": "git",
     "url": "git@github.com:rmrs/react-native-settings.git"
   },
-  "scripts": {
-    "semantic-release": "semantic-release"
-  },
   "keywords": [
     "react-native",
     "react-native-settings",
@@ -27,10 +24,8 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@semantic-release/git": "^9.0.0",
     "husky": "^4.2.3",
-    "prettier": "^2.0.0",
-    "semantic-release": "^19.0.3"
+    "prettier": "^2.0.0"
   },
   "husky": {
     "hooks": {
