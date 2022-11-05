@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: npm
+          registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created }}
         run: npm ci
