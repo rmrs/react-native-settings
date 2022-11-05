@@ -3,7 +3,7 @@ name: Release Please
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   release-please:
@@ -14,8 +14,6 @@ jobs:
         with:
           release-type: node
           package-name: react-native-settings
-          bump-minor-pre-major: true
-          bump-patch-for-minor-pre-major: true
       - uses: actions/checkout@v3
         if: ${{ steps.release.outputs.release_created }}
       - uses: actions/setup-node@v3
