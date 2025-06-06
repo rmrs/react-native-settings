@@ -9,23 +9,26 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - uses: googleapis/release-please-action@v4
         id: release
         with:
           release-type: node
-          package-name: react-native-settings
-      - uses: actions/checkout@v3
+
+      - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
-      - uses: actions/setup-node@v3
+
+      - uses: actions/setup-node@v4
         if: ${{ steps.release.outputs.release_created }}
         with:
-          node-version: 'lts/*'
+          node-version: '22'
           cache: npm
           registry-url: 'https://registry.npmjs.org'
+
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created }}
         run: npm ci
+
       - run: npm publish
         if: ${{ steps.release.outputs.release_created }}
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
