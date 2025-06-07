@@ -1,6 +1,7 @@
 
 package io.rumors.reactnativesettings;
 
+import android.os.Build;
 import android.provider.Settings;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -91,7 +92,12 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
 
   private void registerReceiver(Context reactContext, String filter, BroadcastReceiver receiver) {
     IntentFilter intentFilter = new IntentFilter(filter);
-    reactContext.registerReceiver(receiver, intentFilter);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      reactContext.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED);
+    } else {
+      reactContext.registerReceiver(receiver, intentFilter);
+    }
   }
 
   private void initReceivers() {
@@ -135,7 +141,7 @@ public class RNSettingsModule extends ReactContextBaseJavaModule {
     initHandlers();
     initRequestCodes();
     initSettingsActions();
-    
+
     reactContext.addActivityEventListener(mActivityEventListener);
   }
 
