@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/rmrs/react-native-settings/compare/v1.0.0...v1.0.1) (2025-06-07)
+
+
+### Bug Fixes
+
+* support receiver usage on API26+ ([#128](https://github.com/rmrs/react-native-settings/issues/128)) ([b48ca63](https://github.com/rmrs/react-native-settings/commit/b48ca630119e8de340958c461ea096d18b45f6bc))
+
 ## [1.0.0](https://github.com/rmrs/react-native-settings/compare/v0.2.3...v1.0.0) (2022-11-05)
 
 
