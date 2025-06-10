@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/rmrs/react-native-settings/compare/v1.0.1...v1.0.2) (2025-06-10)
+
+
+### Bug Fixes
+
+* add mavenCentral for repositories ([#132](https://github.com/rmrs/react-native-settings/issues/132)) ([1a66ed9](https://github.com/rmrs/react-native-settings/commit/1a66ed9aaa43df7b7ef6a27e0b4afd04aa13a600))
+* allow overriding minSdkVersion ([#133](https://github.com/rmrs/react-native-settings/issues/133)) ([b1b8f9d](https://github.com/rmrs/react-native-settings/commit/b1b8f9d4c3bf42368c00861c7ae6cb602e2afd7f))
+
 ## [1.0.1](https://github.com/rmrs/react-native-settings/compare/v1.0.0...v1.0.1) (2025-06-07)
 
 
