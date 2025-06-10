@@ -19,7 +19,7 @@ android {
     buildToolsVersion projectVar('buildToolsVersion', '23.0.1')
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion projectVar('minSdkVersion', 16)
         targetSdkVersion projectVar('targetSdkVersion', 22)
         versionCode 1
         versionName "1.0"
